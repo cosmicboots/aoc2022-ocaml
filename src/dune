@@ -1,7 +1,0 @@
-(executables
-  (package aoc2022)
-  (names
-    q01)
-  (public_names
-    q01)
-  )
