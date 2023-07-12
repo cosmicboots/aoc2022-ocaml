@@ -1,5 +1,5 @@
 (executables
  (package aoc2022)
- (names q01 q02)
- (public_names q01 q02)
+ (names q01 q02 q03)
+ (public_names q01 q02 q03)
  (libraries aocutils))
