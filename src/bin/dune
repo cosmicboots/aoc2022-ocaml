@@ -1,5 +1,7 @@
 (executables
  (package aoc2022)
- (names q01 q02 q03 q04 q06)
- (public_names q01 q02 q03 q04 q06)
- (libraries aocutils base stdio))
+ (names q01 q02 q03 q04 q06 q07)
+ (public_names q01 q02 q03 q04 q06 q07)
+ (libraries aocutils base stdio)
+ (preprocess
+  (pps ppx_deriving.show)))
