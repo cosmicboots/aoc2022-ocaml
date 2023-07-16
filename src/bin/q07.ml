@@ -8,20 +8,19 @@ let file = "inputs/q07.txt"
 type node =
   | Dir of directory
   | File of file
-[@@deriving show]
 
 and directory =
   { name : string
   ; dsize : int
   ; children : node list
   }
-[@@deriving show]
+[@@warning "-69"]
 
 and file =
   { fname : string
   ; size : int
   }
-[@@deriving show]
+[@@warning "-69"]
 
 let parse_file line =
   let s = String.split line ~on:' ' in
@@ -85,7 +84,33 @@ let rec find_large_dirs = function
   | File _ -> 0
 ;;
 
+let rec find_dir_cond root ~cond =
+  let f d =
+    List.fold_left d.children ~init:[] ~f:(fun acc x -> acc @ find_dir_cond x ~cond)
+  in
+  match root with
+  | Dir d -> if cond d then d :: f d else f d
+  | File _ -> []
+;;
+
 let content = read_file file
 let nodes, _ = parse_lines (String.split content ~on:'\n')
-let _ = nodes |> List.map ~f:(fun x -> print_endline (show_node x))
-let _ = nodes |> List.map ~f:(fun x -> printf "%d\n" (find_large_dirs x))
+let root = List.hd_exn nodes
+let () = root |> find_large_dirs |> printf "Part 1: %d\n"
+let capacity = 70_000_000
+let required_space = 30_000_000
+
+let total_size =
+  match root with
+  | Dir d -> d.dsize
+  | File _ -> 0
+;;
+
+let _ =
+  root
+  |> find_dir_cond ~cond:(fun x -> x.dsize > required_space - (capacity - total_size))
+  |> List.map ~f:(fun x -> x.dsize)
+  |> List.min_elt ~compare:Int.compare
+  |> Option.value_exn
+  |> printf "Part 2: %d\n"
+;;
